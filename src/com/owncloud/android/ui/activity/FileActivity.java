@@ -48,14 +48,13 @@ import com.owncloud.android.files.services.FileUploader;
 import com.owncloud.android.files.services.FileUploader.FileUploaderBinder;
 import com.owncloud.android.lib.common.network.CertificateCombinedException;
 import com.owncloud.android.lib.common.operations.OnRemoteOperationListener;
-import com.owncloud.android.lib.common.operations.RemoteOperation;
 import com.owncloud.android.lib.common.operations.RemoteOperationResult;
 import com.owncloud.android.lib.common.operations.RemoteOperationResult.ResultCode;
+import com.owncloud.android.lib.common.operations.RemoteOperation;
 import com.owncloud.android.lib.common.utils.Log_OC;
 import com.owncloud.android.operations.CreateShareWithShareeOperation;
 import com.owncloud.android.operations.GetSharesForFileOperation;
 import com.owncloud.android.operations.RemoveShareOperation;
-import com.owncloud.android.operations.RenameFileOperation;
 import com.owncloud.android.operations.SynchronizeFileOperation;
 import com.owncloud.android.operations.SynchronizeFolderOperation;
 import com.owncloud.android.operations.UpdateSharePermissionsOperation;
@@ -333,23 +332,15 @@ public class FileActivity extends DrawerActivity
                     ErrorMessageAdapter.getResultMessage(result, operation, getResources())
                 );
             }
-
-        } else if (operation instanceof RenameFileOperation && result.isSuccess()) {
-
-            result.getData();
-
         }
     }
 
     protected void showRequestAccountChangeNotice() {
         Snackbar.make(findViewById(android.R.id.content), R.string.auth_failure_snackbar, Snackbar.LENGTH_INDEFINITE)
-                .setAction(R.string.auth_failure_snackbar_action, new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent selectAccount = new Intent(FileActivity.this, ManageAccountsActivity.class);
-                                startActivity(selectAccount);
-                            }
-                        }).show();
+                .setAction(R.string.auth_failure_snackbar_action, v -> {
+                    Intent selectAccount = new Intent(FileActivity.this, ManageAccountsActivity.class);
+                    startActivity(selectAccount);
+                }).show();
     }
 
     /**
